@@ -13,7 +13,7 @@ async function buscarPokemon(nombreIngresado) {
     );
     let pokemon = await respuesta.json();
     nombre = pokemon.name;
-    imagen = pokemon.sprites.front_default; 
+    imagen = pokemon.sprites.front_default;
     objetoHabilidad = pokemon.abilities;
 
     let linkHabilidad = {};
@@ -80,7 +80,6 @@ async function buscarPokemon(nombreIngresado) {
       let datosHabitat = await respuestHabitat.json();
       habitat = datosHabitat.names[1].name;
     }
-   
 
     let datosPokemon = {
       nombre,
@@ -99,10 +98,15 @@ async function buscarPokemon(nombreIngresado) {
 
 function mostrarPokemon(datos) {
   let divMostrar = document.querySelector("#mostrar");
-  divMostrar.innerHTML = `<h1>${datos.nombre}</h1>
-  <img src="${datos.imagen}">
-  <p><b>Habitat:</b> ${datos.habitat}</p>
-  <p><b>Habilidades:</b> ${datos.habilidades}</p>
-  <p><b>Pokemon tipo:</b> ${datos.tipoPokemon}</p>`;
+  divMostrar.innerHTML = `
+  <div class="card" style="width: 18rem;">
+  <img src="${datos.imagen}" class="card-img-top" style="background: linear-gradient(${datos.color}, white);">
+  <div class="card-body">
+    <h5 class="card-title">${datos.nombre}</h5>
+    <p class="card-text"><b>Habitat:</b> ${datos.habitat}<br>
+    <b>Habilidades:</b> ${datos.habilidades}<br>
+    <b>Pokemon tipo:</b> ${datos.tipoPokemon}</p>
+  </div>
+  </div>`;
   console.log(datos);
 }
