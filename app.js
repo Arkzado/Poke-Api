@@ -1,6 +1,6 @@
 let btnBuscar = document.querySelector("#botonBuscar");
 btnBuscar.addEventListener("click", buscar);
-
+//cambio chimbo
 function buscar() {
   let nombreIngresado = document.querySelector("#pokemonIngresado").value;
   buscarPokemon(nombreIngresado);
@@ -13,7 +13,7 @@ async function buscarPokemon(nombreIngresado) {
     );
     let pokemon = await respuesta.json();
     nombre = pokemon.name;
-    imagen = pokemon.sprites.front_default;
+    imagen = pokemon.sprites.front_default; 
     objetoHabilidad = pokemon.abilities;
 
     let linkHabilidad = {};
@@ -48,7 +48,6 @@ async function buscarPokemon(nombreIngresado) {
       `https://pokeapi.co/api/v2/pokemon-form/${nombreIngresado}`
     );
     let tipoDePokemon = await tipoRespuesta.json();
-
     tipoPokemon = "";
     let linkTipo = {};
 
