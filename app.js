@@ -1,6 +1,6 @@
 let btnBuscar = document.querySelector("#botonBuscar");
 btnBuscar.addEventListener("click", buscar);
-//cambio chimbo
+//prueba 2
 function buscar() {
   let nombreIngresado = document.querySelector("#pokemonIngresado").value;
   buscarPokemon(nombreIngresado);
