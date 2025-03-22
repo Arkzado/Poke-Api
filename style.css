@@ -2,8 +2,3 @@ body{
     background-image: url(https://www.wallpaperflare.com/static/933/827/743/pok%C3%A9mon-pixel-art-green-grass-wallpaper.jpg);
     background-size: cover;
 }
-
-main{
-    display: grid;
-    justify-content: center;
-}

@@ -1,18 +1,32 @@
 let btnBuscar = document.querySelector("#botonBuscar");
 btnBuscar.addEventListener("click", buscar);
-//prueba 2
+
+let campoPokemon = document.querySelector("#pokemonIngresado");
+let formaBusqueda = document.querySelector("#formaBusqueda");
+formaBusqueda.addEventListener("change", cambiarInput);
+
 function buscar() {
-  let nombreIngresado = document.querySelector("#pokemonIngresado").value;
-  buscarPokemon(nombreIngresado);
+  let pokemonIngresado = document.querySelector("#pokemonIngresado").value;
+  pokemonIngresado = pokemonIngresado.trim().toLowerCase();
+  if ((pokemonIngresado.length > 0 && formaBusqueda.value == "nombre") ||
+      (pokemonIngresado > 0 && pokemonIngresado < 1025 && formaBusqueda.value == "id")) {
+    buscarPokemon(pokemonIngresado);
+  }
+  else{
+    mostrarDesconocido();
+  }
 }
+
+
 async function buscarPokemon(nombreIngresado) {
-  let nombre, imagen, habilidades, habitat, color, tipoPokemon;
+  let nombre, imagen, habilidades, habitat, color, tipoPokemon, id;
   try {
     let respuesta = await fetch(
       `https://pokeapi.co/api/v2/pokemon/${nombreIngresado}`
     );
     let pokemon = await respuesta.json();
     nombre = pokemon.name;
+    id = pokemon.id;
     imagen = pokemon.sprites.front_default;
     objetoHabilidad = pokemon.abilities;
 
@@ -82,6 +96,7 @@ async function buscarPokemon(nombreIngresado) {
     }
 
     let datosPokemon = {
+      id,
       nombre,
       imagen,
       habilidades,
@@ -93,6 +108,7 @@ async function buscarPokemon(nombreIngresado) {
     return;
   } catch (error) {
     console.log(error);
+    mostrarDesconocido();
   }
 }
 
@@ -102,11 +118,54 @@ function mostrarPokemon(datos) {
   <div class="card" style="width: 18rem;">
   <img src="${datos.imagen}" class="card-img-top" style="background: linear-gradient(${datos.color}, white);">
   <div class="card-body">
-    <h5 class="card-title">${datos.nombre}</h5>
-    <p class="card-text"><b>Habitat:</b> ${datos.habitat}<br>
+    <h2 class="card-title d-flex justify-content-center">${datos.nombre}</h2>
+    <p class="card-text">
+    <b>ID:</b> ${datos.id} <br>
+    <b>Habitat:</b> ${datos.habitat}<br>
     <b>Habilidades:</b> ${datos.habilidades}<br>
     <b>Pokemon tipo:</b> ${datos.tipoPokemon}</p>
   </div>
   </div>`;
-  console.log(datos);
 }
+
+function mostrarDesconocido(){
+  let divMostrar = document.querySelector("#mostrar");
+  divMostrar.innerHTML = `
+  <div class="card" style="width: 18rem;">
+  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJrHLXKb_Sn6Jx0xCudYsjNQDhTCsFEnoBfg&s" class="card-img-top" style="background: linear-gradient(yellow, white);">
+  <div class="card-body">
+    <h5 class="card-title">???</h5>
+    <p class="card-text">
+    <b>ID:</b> ???<br>
+    <b>Habitat:</b> ???<br>
+    <b>Habilidades:</b> ???<br>
+    <b>Pokemon tipo:</b> ???</p>
+  </div>
+  </div>`;
+}
+
+function cambiarInput() {
+  if (formaBusqueda.value == "id") {
+    campoPokemon.removeAttribute("disabled");
+    campoPokemon.setAttribute("type", "number");
+    campoPokemon.setAttribute("placeholder", "25");
+    campoPokemon.setAttribute("min", "0");
+    campoPokemon.setAttribute("max", "1025");
+  } else {
+    campoPokemon.removeAttribute("disabled");
+    campoPokemon.setAttribute("type", "text");
+    campoPokemon.setAttribute("placeholder", "Pikachu");
+  }
+}
+
+campoPokemon.addEventListener("input", function (e) {
+  if (formaBusqueda.value == "nombre") {
+    this.value = this.value.replace(/\d/g, "");
+  }
+});
+
+campoPokemon.addEventListener("keydown", function (eventoEnter) {
+  if (eventoEnter.key === "Enter") {
+    buscar();
+  }
+});
